@@ -18,7 +18,7 @@ if not os.path.exists(CARPETA_VALES):
 LISTA_OPERADORES = [
     "Seleccione...", "JUAN PEREZ", "PEDRO GOMEZ", "DIEGO LOPEZ", "CARLOS SOTO", 
     "LUIS MARTINEZ", "MIGUEL SILVA", "JORGE ROJAS", "FRANCISCO VEGA", 
-    "ALBERTO CASTRO", "MANUEL MUNOZ"
+    "ALBERTO CASTRO", "MANUEL MUNOZ", "Planta 1", "Planta 3"
 ]
 LISTA_PATENTES = [
     "Seleccione...", "CXKW-59", "LWTT-25", "KFLP-14", "JTJG-20", "KPDH-49", "FLCC-13", "HZXR-52", "HVBC-43", "FGPJ-94", "ZB40-03"
@@ -75,7 +75,7 @@ def generar_vale_pdf(fecha, operador, equipo, patente, tipo_grasa, cantidad):
 st.title("⚙️ Sistema de Control de Engrasante")
 
 with st.form("formulario_engrasante", clear_on_submit=True):
-    operador = st.selectbox("Operador", LISTA_OPERADORES)
+    operador = st.selectbox("Operador/Planta", LISTA_OPERADORES)
     equipo = st.selectbox("Equipo", LISTA_EQUIPOS)
     tipo_grasa = st.selectbox("Tipo de Grasa", LISTA_GRASAS)
     patente = st.selectbox("Patente", LISTA_PATENTES)
@@ -98,7 +98,7 @@ if btn_guardar:
         
         nuevo_registro = pd.DataFrame({
             "Fecha y Hora": [fecha_actual],
-            "Operador": [operador],
+            "Operador/Planta": [operador],
             "Equipo": [equipo],
             "Patente": [patente],
             "Tipo de Grasa": [tipo_grasa],
@@ -163,6 +163,7 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
 
 
