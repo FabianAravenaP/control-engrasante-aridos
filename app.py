@@ -28,7 +28,7 @@ LISTA_EQUIPOS = [
 ]
 
 LISTA_GRASAS = [
-    "Seleccione...", "MULTIUSO AZUL", "NEGRA DE GRAFITO"
+    "Seleccione...", "MULTIUSO", "NEGRA DE GRAFITO", "AZUL
 ]
 
 # --- FUNCIÓN PARA CREAR EL PDF ---
@@ -162,6 +162,7 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
 
 
