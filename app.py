@@ -89,6 +89,7 @@ if btn_guardar:
     elif cantidad <= 0:
         st.error("⚠️ La cantidad debe ser mayor a 0.")
     else:
+        zona_chile = pytz.timezone('America/Santiago')
         fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         nuevo_registro = pd.DataFrame({
             "Fecha y Hora": [fecha_actual],
@@ -157,4 +158,5 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
