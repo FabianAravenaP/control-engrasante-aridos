@@ -90,8 +90,12 @@ if btn_guardar:
     elif cantidad <= 0:
         st.error("⚠️ La cantidad debe ser mayor a 0.")
     else:
+        # 1. Definir la zona horaria
         zona_chile = pytz.timezone('America/Santiago')
-        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # 2. Pasamos 'zona_chile' dentro de now() para que use la hora de Chile
+        fecha_actual = datetime.now(zona_chile).strftime("%Y-%m-%d %H:%M:%S")
+        
         nuevo_registro = pd.DataFrame({
             "Fecha y Hora": [fecha_actual],
             "Operador": [operador],
@@ -159,6 +163,7 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
 
 
