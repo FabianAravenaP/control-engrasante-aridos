@@ -85,33 +85,46 @@ with st.form("formulario_engrasante", clear_on_submit=True):
 # --- LÓGICA DE GUARDADO EN GOOGLE SHEETS ---
 if btn_guardar:
     if operador == "Seleccione..." or equipo == "Seleccione..." or tipo_grasa == "Seleccione..." or patente == "Seleccione...":
-        st.warning("⚠️ Por favor, seleccione Operador, Equipo, Tipo de Grasa y Patente.")
+        st.warning("⚠️ Por favor, seleccione todos los campos.")
     elif cantidad <= 0:
         st.error("⚠️ La cantidad debe ser mayor a 0.")
     else:
         fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        patente_mayus = patente.upper()
-        
-        # 1. Preparar el nuevo registro
         nuevo_registro = pd.DataFrame({
             "Fecha y Hora": [fecha_actual],
             "Operador": [operador],
             "Equipo": [equipo],
-            "Patente": [patente_mayus],
+            "Patente": [patente],
             "Tipo de Grasa": [tipo_grasa],
             "Cantidad": [cantidad]
         })
-
+        
         try:
-            # 2. Conectar a Google Sheets y actualizar
-            conn = st.connection("gsheets", type=GSheetsConnection)
-            df_existente = conn.read()
+            # 1. LEER: Es fundamental usar ttl=0 aquí para ver TODAS las filas reales
+            df_existente = conn.read(ttl=0)
             
-            # Unir los datos antiguos con el nuevo registro
+            # Limpiamos filas vacías que puedan haber quedado por borrados manuales
+            df_existente = df_existente.dropna(how='all')
+            
+            # 2. UNIR: Concatenamos lo viejo con lo nuevo
             df_actualizado = pd.concat([df_existente, nuevo_registro], ignore_index=True)
             
-            # Enviar la actualización a Google
+            # 3. ACTUALIZAR: Subimos la lista completa de nuevo a Google
             conn.update(data=df_actualizado)
+            
+            # Generar PDF y mostrar éxito
+            ruta_pdf = generar_vale_pdf(fecha_actual, operador, equipo, patente, tipo_grasa, cantidad)
+            st.success("✅ ¡Registro guardado exitosamente!")
+            
+            with open(ruta_pdf, "rb") as pdf_file:
+                st.download_button(
+                    label="📄 Descargar Vale PDF",
+                    data=pdf_file,
+                    file_name=ruta_pdf.split('/')[-1],
+                    mime="application/pdf"
+                )
+        except Exception as e:
+            st.error(f"❌ Error al conectar con Google Sheets: {e}")
             
             # 3. Generar el PDF
             ruta_pdf = generar_vale_pdf(fecha_actual, operador, equipo, patente_mayus, tipo_grasa, cantidad)
@@ -144,3 +157,4 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
