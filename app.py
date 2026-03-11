@@ -128,4 +128,19 @@ if btn_guardar:
                 )
                 
         except Exception as e:
+
             st.error(f"❌ Ocurrió un error de conexión: {e}. Revisa tus credenciales de Google y asegúrate de que el archivo 'secrets.toml' esté configurado.")
+            # --- TABLA DE RESUMEN (Historial) ---
+st.markdown("---")
+st.subheader("📊 Últimos 5 Registros")
+
+try:
+    # Volvemos a leer para mostrar lo más nuevo
+    df_visualizacion = conn.read()
+    if not df_visualizacion.empty:
+        # Mostramos los últimos 5, ordenados por los más recientes arriba
+        st.dataframe(df_visualizacion.tail(5).iloc[::-1], use_container_width=True)
+    else:
+        st.info("Aún no hay registros en la base de datos.")
+except:
+    st.write("Cargando historial...")
