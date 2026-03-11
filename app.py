@@ -17,8 +17,7 @@ if not os.path.exists(CARPETA_VALES):
 # --- LISTAS DE DATOS ---
 LISTA_OPERADORES = [
     "Seleccione...", "JUAN URIBE", "JULIO ÁVILA", "FEDERIC DIAZ", "IVÁN SCHMUCK", 
-    "IVÁN RODRIGUEZ", "LEITON MENDEZ", "JORGE ROJAS", "FRANCISCO VEGA", 
-    "ALBERTO CASTRO", "MANUEL MUNOZ", "Planta 1", "Planta 3"
+    "IVÁN RODRIGUEZ", "LEITON MENDEZ", "Planta 1", "Planta 3"
 ]
 LISTA_PATENTES = [
     "Seleccione...", "CXKW-59", "LWTT-25", "KFLP-14", "JTJG-20", "KPDH-49", "FLCC-13", "HZXR-52", "HVBC-43", "FGPJ-94", "ZB40-03"
@@ -163,6 +162,7 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
 
 
