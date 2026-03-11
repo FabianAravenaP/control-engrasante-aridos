@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import pytz
 from datetime import datetime
 from fpdf import FPDF
 from streamlit_gsheets import GSheetsConnection
@@ -158,5 +159,6 @@ try:
         st.info("Aún no hay registros en la base de datos.")
 except:
     st.write("Cargando historial...")
+
 
 
